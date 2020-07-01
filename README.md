@@ -39,5 +39,6 @@ klo kube-system
 ### MacOS
 
 ```shell
-brew install senoja/kube-locate
+brew tap senoja/formulas
+brew install kube-locate
 ```
