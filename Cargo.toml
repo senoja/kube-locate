@@ -1,0 +1,9 @@
+[package]
+name = "kubernetes-locate"
+version = "0.1.0"
+authors = ["anthony jones <anthony@beforeman.co>"]
+edition = "2018"
+
+[dependencies]
+
+termion = "1"
