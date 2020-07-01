@@ -12,11 +12,15 @@ I'm working on this tool as a project to work on while learning Rust. I still ha
 
 ### Interactive Mode
 
+![Interactive Mode](interactive.gif)
+
 Without any arguments the list of available contexts is presented first, followed by the list of namespaces in that context.  
 
 Use the up and down arrow keys or 'j' and 'k' on the home row.
 
 ### Normal Mode
+
+![Normal Mode](normal.gif)
 
 Provide a context and namespace as the first and second arguments to go straight there.
 ```shell
@@ -28,4 +32,12 @@ For quickly switching contexts or namespaces provide 1 argument: the desired con
 klo docker-desktop
 
 klo kube-system
+```
+
+## Installation
+
+### MacOS
+
+```shell
+brew install senoja/kube-locate
 ```
