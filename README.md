@@ -36,9 +36,28 @@ klo kube-system
 
 ## Installation
 
+Download the latest release and source for linux and MacOS in the [GitHub releases](https://github.com/senoja/kube-locate/releases) or use the instructions below.  
+
 ### MacOS
+
+#### Homebrew
 
 ```shell
 brew tap senoja/formulas
 brew install kube-locate
 ```
+
+#### curl
+
+```shell
+curl -L https://github.com/senoja/kube-locate/releases/download/v0.1.0/kube-locate-v0.1.0-x86_64-apple-darwin.tar.gz | tar xz -C /usr/local/bin
+```
+
+### Linux
+
+#### curl
+
+```shell
+curl -L https://github.com/senoja/kube-locate/releases/download/v0.1.0/kube-locate-v0.1.0-x86_64-unknown-linux-musl.tar.gz | tar xz -C /usr/local/bin
+```
+
