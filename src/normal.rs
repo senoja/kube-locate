@@ -17,7 +17,7 @@ pub fn run(config: &config::Opt) -> Result<(),&'static str> { // TODO: refactor 
                    }
                 }
 
-                let namespaces = kubectl::get_namespaces()?;
+                let namespaces = kubectl::get_namespaces_for_context(&current_context)?;
                 for n in namespaces {
                     if &n == arg1 {
                         return kubectl::set_context_namespace(&current_context, arg1)

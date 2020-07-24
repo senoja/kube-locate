@@ -14,8 +14,8 @@ pub fn run() -> Result<(),&'static str> {
     let contexts = kubectl::get_contexts()?;
     let current_context = kubectl::get_context()?;
 
-    let namespaces = kubectl::get_namespaces()?;
-    let current_namespace = kubectl::get_namespace_for_context(&current_context)?;
+    let mut namespaces = kubectl::get_namespaces_for_context(&current_context)?;
+    let mut current_namespace = kubectl::get_namespace_for_context(&current_context)?;
 
     // TODO: check tty
     let mut stdout = stdout().into_raw_mode().unwrap();
@@ -27,9 +27,10 @@ pub fn run() -> Result<(),&'static str> {
     // behaving strangely.
     // TODO: fix write behavior at bottom of terminal instead of resetting the whole pane
     // TODO: what happens if the number of items exceeds the height of the terminal window?
+    // TODO: magic number
     let (mut x, mut y) = stdout.cursor_pos().unwrap();
     if let Ok(term_size) = termion::terminal_size() {
-        if (term_size.1 - y) < cmp::max(contexts.len() as u16, namespaces.len() as u16) {
+        if (term_size.1 - y) < cmp::max(contexts.len() as u16, 10) {
             x = 1;
             y = 1;
         }
@@ -37,6 +38,11 @@ pub fn run() -> Result<(),&'static str> {
     write!(stdout, "{}{}", cursor::Goto(x, y), clear::AfterCursor).unwrap();
 
     if let Some(selected_context) = interactive_selection(&mut stdout, x, y, contexts, &current_context) {
+        if selected_context != current_context {
+            namespaces = kubectl::get_namespaces_for_context(&selected_context)?;
+            current_namespace = kubectl::get_namespace_for_context(&selected_context)?;
+        }
+
         if let Some(selected_namespace) = interactive_selection(&mut stdout, x, y, namespaces, &current_namespace) {
             write!(stdout, "{}", cursor::Show).unwrap();
             return kubectl::set_context_namespace(&selected_context, &selected_namespace)

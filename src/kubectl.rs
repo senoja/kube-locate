@@ -33,8 +33,8 @@ pub fn get_contexts() -> Result<Vec<String>, &'static str> {
     get_vec(["config","get-contexts","-o=name"].to_vec())
 }
 
-pub fn get_namespaces() -> Result<Vec<String>, &'static str> {
-    get_vec(["get","namespaces","--no-headers","-o=custom-columns=:.metadata.name"].to_vec())
+pub fn get_namespaces_for_context(context: &str) -> Result<Vec<String>, &'static str> {
+    get_vec(["get","namespaces","--no-headers","-o=custom-columns=:.metadata.name", &format!("--context={}", context)].to_vec())
 }
 
 pub fn get_namespace_for_context(context: &str) -> Result<String, &'static str> {
@@ -78,8 +78,9 @@ fn run(args: Vec<&str>) -> Result<process::Output, &'static str> {
     };
 
     if !output.status.success() {
+
         eprintln!("{}", String::from_utf8_lossy(&output.stderr));
-        return Err("could not invoke kubectl");
+        return Err("could not invoke kubectl - is the cluster accessible?");
     }
 
     Ok(output)
