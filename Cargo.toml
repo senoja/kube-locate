@@ -1,5 +1,5 @@
 [package]
-name = "kubernetes-locate"
+name = "klo"
 version = "0.1.0"
 authors = ["anthony jones <anthony@beforeman.co>"]
 edition = "2018"
