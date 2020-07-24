@@ -61,3 +61,11 @@ curl -L https://github.com/senoja/kube-locate/releases/download/v0.1.0/kube-loca
 curl -L https://github.com/senoja/kube-locate/releases/download/v0.1.0/kube-locate-v0.1.0-x86_64-unknown-linux-musl.tar.gz | tar xz -C /usr/local/bin
 ```
 
+## Ideas
+
+- there can be lag when retrieving the namespaces after selecting a context to switch to: it would be nice to poll for the namespaces on boot while the user selects the context and in some cases render faster
+- type ahead filter in interactive mode
+- fuzzy matching in normal mode
+- allow user configuration:
+  - highlight (invert and bold?)
+  - interactive mode (arrow keys, vim jk, type ahead, etc.)
