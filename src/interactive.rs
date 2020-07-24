@@ -1,4 +1,3 @@
-use std::cmp;
 use std::io::{Write, stdout, stdin};
 
 use termion::clear;
@@ -22,19 +21,8 @@ pub fn run() -> Result<(),&'static str> {
 
     write!(stdout, "{}", cursor::Hide).unwrap();
 
-    // Setup screen location
-    // when the list is close to the bottom of the terminal window the cursor_positions are
-    // behaving strangely.
-    // TODO: fix write behavior at bottom of terminal instead of resetting the whole pane
-    // TODO: what happens if the number of items exceeds the height of the terminal window?
-    // TODO: magic number
-    let (mut x, mut y) = stdout.cursor_pos().unwrap();
-    if let Ok(term_size) = termion::terminal_size() {
-        if (term_size.1 - y) < cmp::max(contexts.len() as u16, 10) {
-            x = 1;
-            y = 1;
-        }
-    }
+    // Setup screen location and clear line
+    let (x, y) = stdout.cursor_pos().unwrap();
     write!(stdout, "{}{}", cursor::Goto(x, y), clear::AfterCursor).unwrap();
 
     if let Some(selected_context) = interactive_selection(&mut stdout, x, y, contexts, &current_context) {
@@ -54,9 +42,18 @@ pub fn run() -> Result<(),&'static str> {
     Ok(())
 }
 
-fn interactive_selection(stdout: &mut raw::RawTerminal<std::io::Stdout>, x: u16, y: u16, items: Vec<String>, starting_item: &str) -> Option<String> {
+fn interactive_selection(stdout: &mut raw::RawTerminal<std::io::Stdout>, x: u16, mut y: u16, items: Vec<String>, starting_item: &str) -> Option<String> {
     let mut list = DisplayList::new(items, starting_item);
     list.render(stdout);
+
+    // Resample y when the printed list scrolls the terminal
+    // TODO: cleanup casting
+    if let Ok(term_size) = termion::terminal_size() {
+        let adjustment: i16 = (y + list.items.len() as u16) as i16 - term_size.1 as i16;
+        if adjustment > 0 {
+            y -= adjustment as u16;
+        }
+    }
 
     for c in stdin().keys() {
         write!(stdout, "{}{}", cursor::Goto(x, y), clear::AfterCursor).unwrap();
