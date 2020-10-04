@@ -1,6 +1,6 @@
 [package]
 name = "klo"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["anthony jones <anthony@beforeman.co>"]
 edition = "2018"
 
