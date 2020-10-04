@@ -2,16 +2,16 @@
 # It is not intended for manual editing.
 [[package]]
 name = "klo"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "termion",
 ]
 
 [[package]]
 name = "libc"
-version = "0.2.73"
+version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bd7d4bd64732af4bf3a67f367c27df8520ad7e230c5817b8ff485864d80242b9"
+checksum = "aa7087f49d294270db4e1928fc110c976cd4b9e5a16348e0a1df09afa99e6c98"
 
 [[package]]
 name = "numtoa"
